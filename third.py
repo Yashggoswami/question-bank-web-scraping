@@ -4,8 +4,9 @@ import requests
 from bs4 import BeautifulSoup
 
 
-url = "https://www.examveda.com/computer-fundamentals/practice-mcq-question-on-computer-fundamental-miscellaneous/"
+# url = "https://www.examveda.com/computer-fundamentals/practice-mcq-question-on-computer-fundamental-miscellaneous/"
 
+url = "https://www.examveda.com/computer-fundamentals/practice-mcq-question-on-computer-fundamental-miscellaneous/?page=2"
 
 # single-question
 
@@ -23,6 +24,13 @@ for questions in soup.find_all(class_='question single-question question-type-no
             if not flag:
                 print(option.get_text())
             flag = not flag
+        # j = 1
+        
+        # for cur in questions.find_all('i'):
+        #     if 'text-success' in cur['class']:
+        #         print("correct ans is "+j)
+        #         break
+        #     j+=1
     except:
         continue
     # print(que)
