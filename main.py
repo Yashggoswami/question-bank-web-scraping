@@ -5,7 +5,7 @@ from bs4 import BeautifulSoup
 url = "https://www.sanfoundry.com/java-mcqs-integer-floating-data-types/"
 
 s = set()
-count = 1
+count = 3
 
 # function for finding links to get data from
 
@@ -39,7 +39,7 @@ def find_data(url):
     htmlContent = r.content
     soup = BeautifulSoup(htmlContent,'html.parser')
 
-    for data in soup.find_all('p'):
+    for data in soup.find_all("div",class_ ="entry-content"):
         st = data.get_text().replace("advertisement", "")
         print(st)
     print("<=========================== page break ========================>")
@@ -94,3 +94,5 @@ for link in s:
 #     st = data.get_text().replace("advertisement","")
 #     st1 = st.replace('\n','')
 #     print(st1)
+
+
