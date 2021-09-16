@@ -7,8 +7,8 @@ data = {}
 
 def find_data(count):
     for j in range(1,count+1):
-        url = f"https://www.examveda.com/computer-fundamentals/practice-mcq-question-on-computer-fundamental-miscellaneous/?page={j}"
-
+        # url = f"https://www.examveda.com/computer-fundamentals/practice-mcq-question-on-computer-fundamental-miscellaneous/?page={j}"
+        url = f"https://www.examveda.com/computer-fundamentals/practice-mcq-question-on-computer-fundamental-miscellaneous/?section=2&page={j}"
         r = requests.get(url)
         htmlContent = r.content
 
@@ -21,7 +21,7 @@ def find_data(count):
                 key = questions.find(class_='question-number').get_text()
                 temp = {}
                 que = questions.find(class_='question-main').get_text()
-                temp["question"] = que
+                temp["questionStatement"] = que
                 
                 # extracting all options
                 flag,i = True,1
@@ -32,23 +32,29 @@ def find_data(count):
                         i+=1
                     flag = not flag
                 
-                correctAns = questions.find_all('strong')[0].get_text()
+                correctAnswer = questions.find_all('strong')[0].get_text()
                 
-                if 'Option A' in correctAns:
-                    temp['correctAns'] = temp['option1']
-                elif 'Option B' in correctAns:
-                    temp['correctAns'] = temp['option2']
-                elif 'Option C' in correctAns:
-                    temp['correctAns'] = temp['option3']
-                elif 'Option D' in correctAns:
-                    temp['correctAns'] = temp['option4']
+                if 'Option A' in correctAnswer:
+                    temp['correctAnswer'] = temp['option1']
+                elif 'Option B' in correctAnswer:
+                    temp['correctAnswer'] = temp['option2']
+                elif 'Option C' in correctAnswer:
+                    temp['correctAnswer'] = temp['option3']
+                elif 'Option D' in correctAnswer:
+                    temp['correctAnswer'] = temp['option4']
                 else:
-                    temp['correctAns'] = temp['option5']
-                
+                    temp['correctAnswer'] = temp['option5']
+
                 global data
                 data[key] = temp
             except:
                 continue
 
-find_data(3)
-print(data)
+if __name__=='__main__':
+    find_data(5)
+    for k,v in data.items():
+        columns = ','.join("`"+str(x).replace('/','_')+"`" for x in v.keys())
+        values = ','.join("'"+str(x).replace('/','_')+"'" for x in v.values())
+        sql = f"Insert Into Questions ({columns}) values ({values});"
+        print(sql)
+
